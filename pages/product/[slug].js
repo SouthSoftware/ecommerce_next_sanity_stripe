@@ -8,7 +8,12 @@ import { AiOutlineMinus } from 'react-icons/ai';
 
 import { useStateContext } from '../../context/StateContext';
 
-const ProductDetails = ({ productDetails, products}) => {
+/**
+ * If there are suggested products, add as a parameter after productDetails
+ * @param {*} param0 
+ * @returns 
+ */
+const ProductDetails = ({ productDetails}) => {
 
     const { images, name, details, price} = productDetails;
     const [ index, setIndex ] = useState(0);
@@ -70,16 +75,16 @@ const ProductDetails = ({ productDetails, products}) => {
         </div>
 
         {/* Productos sugeridos */}
+        {/* {products?.map((item) => (
         <div className='product-details__suggested'>
             <h2>Te puede interesar</h2>
             <div className='marquee'>
                 <div className='product-details__suggested-item'>
-                    {products.map((item) => (
-                        <Product key={item._id} product={item} />
-                    ))}
+                    <Product key={item._id} product={item} />
                 </div>
             </div>
         </div>
+        ))} */}
     </section>
     )
 }
@@ -111,13 +116,14 @@ export const getStaticProps = async ({ params: { slug }}) => {
      * TODO: Cambiar consulta para que me lleguen todos los productos menos el seleccionado 
      * Ya que queremos mostrar productos similares, y el mismo no se debe incluir =========> DONE
      */
-    const queryProducts = `*[_type == "product" && slug.current != '${slug}']`;
+    /* const queryProducts = `*[_type == "product" && slug.current != '${slug}']`; */
     
     const productDetails = await client.fetch(queryProductDetails);
-    const products = await client.fetch(queryProducts);
+    /* const products = await client.fetch(queryProducts); */
   
+    /* If there are suggested products, add as a parameter after productDetails */
     return {
-      props: { productDetails, products }
+      props: { productDetails }
     }
 }
 
